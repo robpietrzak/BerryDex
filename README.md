@@ -42,27 +42,6 @@ BerryDex is built with **Node.js**, **Express**, **SQLite**, and plain **HTML/CS
 
 ---
 
-## Folder Structure
-
-```
-berrydex/
-│
-├── database/
-│   ├── berries.sqlite        # SQLite database (ignored in Git)
-│   └── database.js           # SQLite connection
-│
-├── public/
-│   ├── index.html
-│   ├── style.css
-│   └── script.js
-│
-├── server/
-│   └── server.js
-│
-├── .gitignore
-├── package.json
-└── README.md
-```
 
 ---
 
