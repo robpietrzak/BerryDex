@@ -1,4 +1,4 @@
-# BerryDex
+# BerryDex 🍓
 
 > **BerryDex** is a full-stack web application that allows users to browse, search, and learn about different types of berries. Each berry has information like sweetness, tartness, origin, biography, and fun facts.
 
@@ -7,12 +7,11 @@ BerryDex is built with **Node.js**, **Express**, **SQLite**, and plain **HTML/CS
 ---
 
 ## Table of Contents
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Folder Structure](#folder-structure)
-- [Getting Started](#getting-started)
-- [Future Improvements](#future-improvements)
-- [License](#license)
+- [Features](#features)  
+- [Tech Stack](#tech-stack)  
+- [Getting Started](#getting-started)  
+- [Future Improvements](#future-improvements)  
+- [License](#license)  
 
 ---
 
@@ -29,6 +28,7 @@ BerryDex is built with **Node.js**, **Express**, **SQLite**, and plain **HTML/CS
 - API endpoint to fetch berry data (`/api/berries`)
 - SQLite database for persistent storage
 - Fully responsive frontend
+- `seed.js` script to safely add new berries to the database without creating duplicates
 
 ---
 
@@ -39,9 +39,6 @@ BerryDex is built with **Node.js**, **Express**, **SQLite**, and plain **HTML/CS
 - **Database:** SQLite
 - **Version Control:** Git & GitHub
 - **Hosting/Deployment:** [Render](https://render.com/) or similar
-
----
-
 
 ---
 
@@ -60,18 +57,24 @@ cd berrydex
 npm install
 ```
 
-### 3. Run the server
+### 3. Seed the database
+- Run `seed.js` to add berries to the database (safe to run multiple times):
 ```bash
-npm start
+node seed.js
 ```
 
-### 4. Open the website
+### 4. Run the server
+```bash
+node server.js
+```
+
+### 5. Open the website
 - Navigate to [http://localhost:3000](http://localhost:3000) in your browser
 - The BerryDex homepage should load, displaying berries from the database
 
-### 5. Notes
-- If you restart the server, berries will not duplicate thanks to database seeding checks
-- Make sure `berries.sqlite` exists in the `database/` folder or let `database.js` create it
+### 6. Notes
+- If you restart the server, berries will not duplicate thanks to the safe seed script
+- Make sure `berries.sqlite` exists or let `database.js` create it
 
 ---
 
