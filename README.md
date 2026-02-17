@@ -1,144 +1,164 @@
 # BerryDex
 
-BerryDex is a small web application that allows users to look up different kinds of berries and see information about them, including sweetness, tartness, country of origin, a short biography, and fun facts. It uses a Node.js + Express backend with SQLite for storage.
+BerryDex is a web app that allows users to browse different kinds of berries. Each berry has details like sweetness, tartness, origin, bio, fun facts, and an optional image. The backend is built with **Node.js**, **Express**, and **SQLite**, and the frontend is a dynamic collapsible interface.
+
+---
+
+## Table of Contents
+
+- [Features](#features)
+- [Setup](#setup)
+- [Database](#database)
+- [API](#api)
+- [Frontend](#frontend)
+- [Future Improvements](#future-improvements)
 
 ---
 
 ## Features
 
-- View all berries sorted alphabetically
-- Add new berries via API (for development)
-- Update berry information via API
+- Browse berries in alphabetical order
+- Collapsible berry cards showing detailed info
+- Add new berries via API
+- Update berry info partially via API
 - Delete berries via API
-- Frontend displays berry information (static HTML/CSS/JS)
+- Optional image support for each berry
+- Search berries by name
 
 ---
 
-## Installation
+## Setup
 
 1. Clone the repository:
+
 ```bash
-git clone <repository-url>
+git clone <your-repo-url>
 cd berrydex
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
-3. Start the server:
+3. Ensure your database exists (`berries.sqlite`) and includes the following columns:
+
+- `id` (INTEGER PRIMARY KEY AUTOINCREMENT)
+- `name` (TEXT)
+- `sweetness` (INTEGER, 0–5)
+- `tartness` (INTEGER, 0–5)
+- `origin` (TEXT)
+- `bio` (TEXT)
+- `fun_fact` (TEXT)
+- `image_url` (TEXT)
+
+> If `image_url` is missing, run a Node script to add it:
+
+```bash
+node add_image_column.js
+```
+
+4. Start the server:
+
 ```bash
 node server.js
 ```
 
-The server will run at `http://localhost:3000`.
+5. Open your browser to `http://localhost:3000`
 
 ---
 
 ## Database
 
-Berry data is stored in SQLite (`berries.sqlite`). The database is automatically created on first run and seeded with initial berries if empty.
+- Uses SQLite (`berries.sqlite`)
+- `database.js` handles the connection and table creation
+- Supports adding, updating, and deleting berries
 
 ---
 
-## API Routes
+## API
 
-### Get All Berries
+### GET `/api/berries`
 
-**GET**
+- Returns all berries in alphabetical order.
+- Example response:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Strawberry",
+    "sweetness": 4,
+    "tartness": 2,
+    "origin": "France",
+    "bio": "A popular red berry.",
+    "fun_fact": "Not a true berry",
+    "image_url": "https://example.com/strawberry.png"
+  }
+]
 ```
-/api/berries
-```
 
-Returns all berries sorted alphabetically.
+### POST `/api/berries`
 
----
+- Adds a new berry.
+- Required fields: `name`
+- Optional fields: `sweetness`, `tartness`, `origin`, `bio`, `fun_fact`, `image_url`
+- Example request body:
 
-### Create a Berry (POST)
-
-**POST**
-```
-/api/berries
-```
-
-**Body (JSON):**
 ```json
 {
   "name": "Razz Berry",
-  "sweetness": 2,
-  "tartness": 4,
-  "origin": "Kanto",
-  "bio": "A sharply tart berry.",
-  "fun_fact": "Loved in contests."
+  "sweetness": 4,
+  "tartness": 2,
+  "origin": "Fantasy Land",
+  "bio": "A rare red berry.",
+  "fun_fact": "Loved by trainers!",
+  "image_url": "https://example.com/razzberry.png"
 }
 ```
 
-**Response:**
-- `201 Created` on success
-- Returns the newly created berry with its `id`
+- Returns the created berry with `id`.
 
----
+### PUT `/api/berries/:id`
 
-### Update a Berry (PUT)
+- Updates an existing berry.
+- Supports **partial updates** — only the fields you send will change.
+- Allowed fields: `name`, `sweetness`, `tartness`, `origin`, `bio`, `fun_fact`, `image_url`
+- Example request body (updating just the image):
 
-**PUT**
-```
-/api/berries/:id
-```
-
-Example:
-```
-/api/berries/4
-```
-
-⚠️ All fields must be included in the request body.
-
-**Body (JSON):**
 ```json
 {
-  "name": "Razz Berry",
-  "sweetness": 2,
-  "tartness": 4,
-  "origin": "Kanto",
-  "bio": "A sharply tart berry.",
-  "fun_fact": "Now known to boost contest appeal."
+  "image_url": "https://example.com/newrazz.png"
 }
 ```
 
-**Response:**
-- `200 OK` on success
-- `404 Not Found` if berry does not exist
+- Returns a message confirming the update.
 
----
+### DELETE `/api/berries/:id`
 
-### Delete a Berry (DELETE)
-
-**DELETE**
-```
-/api/berries/:id
-```
-
-Example:
-```
-/api/berries/4
-```
-
-No request body required.
-
-**Response:**
-- `200 OK` if deleted
-- `404 Not Found` if berry does not exist
+- Deletes a berry by its `id`.
+- Returns a message confirming deletion.
 
 ---
 
 ## Frontend
 
-Static HTML/CSS/JS files are served from the project root. The frontend fetches berry data from the API and displays it in a user-friendly format.
+- `index.html` + `style.css` + `script.js`
+- Dynamic collapsible interface:  
+  - Only berry name shows initially  
+  - Clicking the name expands details  
+  - Future image support included  
+- Search berries by name
 
 ---
 
-## Notes
+## Future Improvements
 
-- All new berry entries and updates should be done via the API.
-- Sorting is done at the SQL level, so new berries will automatically appea
+- Add images to all berries
+- Sort/filter berries by sweetness or tartness
+- Add categories or tags (e.g., "tropical", "wild")
+- User authentication to allow adding/deleting berries via frontend
+- Pagination for large databases
+- More interactive UI animations
+

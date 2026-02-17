@@ -1,11 +1,103 @@
+/* ---------------------------
+   Global styles
+--------------------------- */
 body {
-    font-family: Arial, sans-serif;
-    padding: 20px
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f4f8;
+  margin: 0;
+  padding: 20px;
 }
 
-.berry {
-    border: 1px solid #ccc
-    padding: 12px;
-    margin-bottom: 10px;
-    border-radius: 6px;
+h1 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* ---------------------------
+   Search box
+--------------------------- */
+#search {
+  display: block;
+  margin: 0 auto 20px auto;
+  padding: 10px 15px;
+  width: 300px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+/* ---------------------------
+   Berry card container
+--------------------------- */
+.berry-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.berry-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* ---------------------------
+   Berry name
+--------------------------- */
+.berry-name {
+  margin: 0;
+  font-size: 1.3em;
+  color: #27ae60; /* green accent */
+}
+
+/* ---------------------------
+   Berry details (collapsed initially)
+--------------------------- */
+.berry-details {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.berry-details p {
+  margin: 5px 0;
+}
+
+/* ---------------------------
+   Labels in details
+--------------------------- */
+.label {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* ---------------------------
+   Future image styles
+--------------------------- */
+.berry-image {
+  display: block;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* ---------------------------
+   Responsive design
+--------------------------- */
+@media (max-width: 500px) {
+  #search {
+    width: 90%;
+  }
+  
+  .berry-image {
+    width: 80px;
+    height: 80px;
+  }
 }
