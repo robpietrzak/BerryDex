@@ -17,33 +17,57 @@ app.get("/api/berries", (req, res) => {
 });
 
 app.post("/api/berries", (req, res) => {
-  if (process.env.NODE_ENV === "production") {
-    return res.status(403).json({ error: "Forbidden" });
-  }
+  const { name, sweetness, tartness, origin, bio, fun_fact } = req.body;
 
-  const { name, description } = req.body;
-
-  if (!name || !description) {
-    return res.status(400).json({ error: "Name and description required" });
+  if (!name) {
+    return res.status(400).json({ error: "Name is required" });
   }
 
   const sql = `
-    INSERT INTO berries (name, description)
-    VALUES (?, ?)
+    INSERT INTO berries (name, sweetness, tartness, origin, bio, fun_fact)
+    VALUES (?, ?, ?, ?, ?, ?)
   `;
 
-  db.run(sql, [name.trim(), description.trim()], function (err) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
+  
+
+  db.run(
+    sql,
+    [
+      name.trim(),
+      sweetness || null,
+      tartness || null,
+      origin || null,
+      bio || null,
+      fun_fact || null
+    ],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+
+      res.status(201).json({
+        id: this.lastID,
+        name,
+        sweetness,
+        tartness,
+        origin,
+        bio,
+        fun_fact
+      });
+    }
+  );
+});
+
+app.delete("/api/berries/:id", (req, res) => {
+  const { id } = req.params;
+
+  db.run("DELETE FROM berries WHERE id = ?", [id], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+
+    if (this.changes === 0) {
+      return res.status(404).json({ error: "Berry not found" });
     }
 
-    res.status(201).json({
-      id: this.lastID,
-      name,
-      description
-    });
+    res.json({ message: "Berry deleted" });
   });
-  console.log("POST /api/berries hit");
 });
 
 // Serve frontend files

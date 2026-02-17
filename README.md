@@ -1,94 +1,144 @@
-# BerryDex 🍓
+# BerryDex
 
-> **BerryDex** is a full-stack web application that allows users to browse, search, and learn about different types of berries. Each berry has information like sweetness, tartness, origin, biography, and fun facts.
-
-BerryDex is built with **Node.js**, **Express**, **SQLite**, and plain **HTML/CSS/JS**, making it a great portfolio project for demonstrating full-stack skills.
-
----
-
-## Table of Contents
-- [Features](#features)  
-- [Tech Stack](#tech-stack)  
-- [Getting Started](#getting-started)  
-- [Future Improvements](#future-improvements)  
-- [License](#license)  
+BerryDex is a small web application that allows users to look up different kinds of berries and see information about them, including sweetness, tartness, country of origin, a short biography, and fun facts. It uses a Node.js + Express backend with SQLite for storage.
 
 ---
 
 ## Features
 
-- List of berries with detailed information:
-  - Name
-  - Sweetness level (1–5)
-  - Tartness level (1–5)
-  - Origin (country/region)
-  - Biography
-  - Fun fact
-- Dynamic search and filtering (planned)
-- API endpoint to fetch berry data (`/api/berries`)
-- SQLite database for persistent storage
-- Fully responsive frontend
-- `seed.js` script to safely add new berries to the database without creating duplicates
+- View all berries sorted alphabetically
+- Add new berries via API (for development)
+- Update berry information via API
+- Delete berries via API
+- Frontend displays berry information (static HTML/CSS/JS)
 
 ---
 
-## Tech Stack
+## Installation
 
-- **Frontend:** HTML, CSS, JavaScript
-- **Backend:** Node.js, Express.js
-- **Database:** SQLite
-- **Version Control:** Git & GitHub
-- **Hosting/Deployment:** [Render](https://render.com/) or similar
-
----
-
-## Getting Started
-
-Follow these steps to run BerryDex locally:
-
-### 1. Clone the repo
+1. Clone the repository:
 ```bash
-git clone <your-repo-url>
+git clone <repository-url>
 cd berrydex
 ```
 
-### 2. Install dependencies
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-### 3. Seed the database
-- Run `seed.js` to add berries to the database (safe to run multiple times):
-```bash
-node seed.js
-```
-
-### 4. Run the server
+3. Start the server:
 ```bash
 node server.js
 ```
 
-### 5. Open the website
-- Navigate to [http://localhost:3000](http://localhost:3000) in your browser
-- The BerryDex homepage should load, displaying berries from the database
-
-### 6. Notes
-- If you restart the server, berries will not duplicate thanks to the safe seed script
-- Make sure `berries.sqlite` exists or let `database.js` create it
+The server will run at `http://localhost:3000`.
 
 ---
 
-## Future Improvements
+## Database
 
-- Add **search and filtering** by sweetness, tartness, origin, and uses
-- Add **images for each berry**
-- Implement **AI-powered recommendations** (e.g., “Which berry is best for jam?”)
-- Add **berry detail pages**
-- Deploy online and connect with a real domain
+Berry data is stored in SQLite (`berries.sqlite`). The database is automatically created on first run and seeded with initial berries if empty.
 
 ---
 
-## License
+## API Routes
 
-This project is open source and available under the [MIT License](LICENSE).
+### Get All Berries
 
+**GET**
+```
+/api/berries
+```
+
+Returns all berries sorted alphabetically.
+
+---
+
+### Create a Berry (POST)
+
+**POST**
+```
+/api/berries
+```
+
+**Body (JSON):**
+```json
+{
+  "name": "Razz Berry",
+  "sweetness": 2,
+  "tartness": 4,
+  "origin": "Kanto",
+  "bio": "A sharply tart berry.",
+  "fun_fact": "Loved in contests."
+}
+```
+
+**Response:**
+- `201 Created` on success
+- Returns the newly created berry with its `id`
+
+---
+
+### Update a Berry (PUT)
+
+**PUT**
+```
+/api/berries/:id
+```
+
+Example:
+```
+/api/berries/4
+```
+
+⚠️ All fields must be included in the request body.
+
+**Body (JSON):**
+```json
+{
+  "name": "Razz Berry",
+  "sweetness": 2,
+  "tartness": 4,
+  "origin": "Kanto",
+  "bio": "A sharply tart berry.",
+  "fun_fact": "Now known to boost contest appeal."
+}
+```
+
+**Response:**
+- `200 OK` on success
+- `404 Not Found` if berry does not exist
+
+---
+
+### Delete a Berry (DELETE)
+
+**DELETE**
+```
+/api/berries/:id
+```
+
+Example:
+```
+/api/berries/4
+```
+
+No request body required.
+
+**Response:**
+- `200 OK` if deleted
+- `404 Not Found` if berry does not exist
+
+---
+
+## Frontend
+
+Static HTML/CSS/JS files are served from the project root. The frontend fetches berry data from the API and displays it in a user-friendly format.
+
+---
+
+## Notes
+
+- All new berry entries and updates should be done via the API.
+- Sorting is done at the SQL level, so new berries will automatically appea
